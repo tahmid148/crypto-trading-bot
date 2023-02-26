@@ -13,7 +13,13 @@ def on_message(ws, message):
     print("Message Recieved")
     json_message = json.loads(message)
     pprint.pprint(json_message)
-
+    
+    candle = json_message['k']
+    is_candle_closed = candle['x']
+    close_price = candle['c']
+    
+    if is_candle_closed:
+        print(f"Candle closed at {close_price}")
     
 
 ws = websocket.WebSocketApp(SOCKET, on_open=on_open, on_close=on_close, on_message=on_message)
