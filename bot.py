@@ -48,8 +48,9 @@ def on_message(ws, message):
     
     if is_candle_closed:
         print(f"Candle closed at {close_price}")
-        closes.append(float(closes))
+        closes.append(float(close_price))
         print(f"Closes: {closes}")
+
         
         if (len(closes) > RSI_PERIOD):
             np_closes = np.array(closes)
