@@ -1,7 +1,14 @@
-import websocket, json, pprint
+import websocket, json, pprint, numpy as np, talib
 
 # Create a socket that retrives data on ETHUSDT pair every 1 minute
 SOCKET = "wss://stream.binance.com:9443/ws/ethusdt@kline_1m"
+
+# RSI over a 14 day period
+RSI_PERIOD = 14
+RSI_OVERBOUGHT = 70 # Execute SELL
+RSI_OVERSOLD = 30   # Execute BUY
+TRADE_SYMBOL = "ETHUSD"
+TRADE_QUANTITY = 0.05
 
 closes = []
 
