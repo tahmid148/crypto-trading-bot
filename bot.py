@@ -17,6 +17,20 @@ in_position = False
 
 client = Client(config.API_KEY, config.API_SECRET)
 
+def order(side, symbol, quantity, order_type=ORDER_TYPE_MARKET):
+    try:
+        print("Sending Order:")
+        order = client.create_order(
+            symbol=symbol,
+            side=side,
+            type=order_type,
+            quantity=quantity
+        )
+        print(order)
+    except Exception as e:
+        return False        
+    return True
+
 def on_open(ws):
     print("Connection Opened")
 
@@ -49,6 +63,9 @@ def on_message(ws, message):
                 if in_position:
                     print("Overbought: SELL!")
                     # Insert Binance Logic
+                    order_succeeded = order(SIDE_SELL, TRADE_QUANTITY, TRADE_SYMBOL)
+                    if order_succeeded:
+                        in_position = False
                 else:
                     print("Overbought, but we have no position")
     
@@ -57,6 +74,9 @@ def on_message(ws, message):
                     print("It is oversold, but you already own it!")
                 print("Oversold: BUY!")
                 # Insert Binance Logic
+                order_succeeded = order(SIDE_BUY, TRADE_QUANTITY, TRADE_SYMBOL)
+                if order_succeeded:
+                    in_position = True
     
 
 ws = websocket.WebSocketApp(SOCKET, on_open=on_open, on_close=on_close, on_message=on_message)
